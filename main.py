@@ -93,8 +93,8 @@ class MyGame(arcade.Window):
           rectangle.draw()
           rectangle.update()
 
+#cree cercle avec bpoutonj droite
 
-#ceci fait que lorsuqye lon press sur gauche on cree un cercle
   def on_mouse_press(self, x: int, y: int, button: int, modifiers: int):
 
     if button == 1:
@@ -105,7 +105,7 @@ class MyGame(arcade.Window):
         cercle = Cercle(rayon, center_x, center_y, color, 5, 5)
         self.liste_cercles.append(cercle)
 
-  #faire que lorsuwe kon press sur droite in cree u  rectangpe
+  #cree le rectangle avec bouton gauche
     elif button == 4:
         longeur = random.randint(10, 50)
         largeur = random.randint(10, 50)
