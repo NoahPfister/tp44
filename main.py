@@ -1,5 +1,6 @@
 # ici j'importe
 import arcade
+import random
 
 SCREEN_WIDTH = 800
 SCREEN_HEIGHT = 600
@@ -40,7 +41,7 @@ class Cercle():
 
 #je cree le rectangle
 class Rectangle():
-   def __init__(self, la, lo , x, y, c, VarX, VarY):
+   def __init__(self, la, lo , x, y, c, VarX, VarY, angle):
        self.largeur = la
        self.longueur = lo
        self.centre_x = x
@@ -48,12 +49,12 @@ class Rectangle():
        self.color = c
        self.change_x = VarX
        self.change_y = VarY
-
+       self.angle = angle
        # je decine le rectangle
 
    def draw(self):
        # arcade.draw_circle_filled(center_x, center_y, rayon, color)
-       arcade.draw_rectangle_filled(self.centre_x, self.centre_y, self.largeur, self. longueur, self.color)
+       arcade.draw_rectangle_filled(self.centre_x, self.centre_y, self.largeur, self. longueur, self.color, self.angle)
 #ceci fait bouger le rectangle
    def update(self):
 
@@ -77,25 +78,6 @@ class MyGame(arcade.Window):
 
 
 
-  # definir cercle et rectangle
-  def setup(self):
-      # remplir la liste avec 20 objets de type Cercle
-      for _ in range(20):
-          rayon = random.randint(10, 50)
-          center_x = random.randint(0 + rayon, SCREEN_WIDTH - rayon)
-          center_y = random.randint(0 + rayon, SCREEN_HEIGHT - rayon)
-          color = random.choice(COLORS)
-          cercle = Cercle(rayon, center_x, center_y, color, 5,5)
-          self.liste_cercles.append(cercle)
-    #remplir liste avec 20 rectangle
-      for _ in range(20):
-           longeur = random.randint(10,50)
-           largeur = random.randint(10,50)
-           center_x = random.randint(0+largeur, SCREEN_WIDTH - largeur)
-           center_y = random.randint(0+longeur, SCREEN_HEIGHT - longeur)
-           color = random.choice(COLORS)
-           rectangle = Rectangle(largeur,longeur, center_x, center_y, color, 5, 5)
-           self.liste_rectangle.append(rectangle)
 
 #commenceer le render
 
@@ -111,38 +93,35 @@ class MyGame(arcade.Window):
           rectangle.draw()
           rectangle.update()
 
-#faire en sorte de effacer lescercle
 
-
+#ceci fait que lorsuqye lon press sur gauche on cree un cercle
   def on_mouse_press(self, x: int, y: int, button: int, modifiers: int):
-      if button == 1:
-          for i in self.liste_cercles:
-              maxpositionX = i.centre_x + i.rayon
-              maxpositiponY = i.centre_y + i.rayon
-              minpositionX = i.centre_x - i.rayon
-              minpositionY = i.centre_y - i.rayon
 
-              if maxpositionX > x > minpositionX and maxpositiponY > y > minpositionY:
-                  self.liste_cercles.remove(i)
+    if button == 1:
+        rayon = random.randint(10, 50)
+        center_x = x
+        center_y = y
+        color = random.choice(COLORS)
+        cercle = Cercle(rayon, center_x, center_y, color, 5, 5)
+        self.liste_cercles.append(cercle)
 
-  # randomiser les couleurs
-      elif button == 4:
-          for i in self.liste_cercles:
-              maxpositionX = i.centre_x + i.rayon
-              maxpositiponY = i.centre_y + i.rayon
-              minpositionX = i.centre_x - i.rayon
-              minpositionY = i.centre_y - i.rayon
+  #faire que lorsuwe kon press sur droite in cree u  rectangpe
+    elif button == 4:
+        longeur = random.randint(10, 50)
+        largeur = random.randint(10, 50)
+        center_x = x
+        center_y = y
+        color = random.choice(COLORS)
+        angle = random.randint(-360,360)
+        rectangle = Rectangle(largeur, longeur, center_x, center_y, color, 5, 5, angle)
+        self.liste_rectangle.append(rectangle)
 
-              if maxpositionX > x > minpositionX and maxpositiponY > y > minpositionY:
-                  i.color = random.choice(COLORS)
 
 #ceci est le jeux
 def main():
   my_game = MyGame()
-  my_game.setup()
 
   arcade.run()
 
 
 main()
-
